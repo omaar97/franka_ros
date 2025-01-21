@@ -22,7 +22,7 @@ bool ObjectHandoverVMCController::init(hardware_interface::RobotHW* robot_hw,
   // Receive joint torques from the rospy-Julia server and apply them to the robot.
 
   joints_subscriber = node_handle.subscribe(
-      "/joint_commands", 20, [](const std_msgs::Float64MultiArray& msg){&ObjectHandoverVMCController::TorquesFromJulia}, this,
+      "/joint_commands", 20, &ObjectHandoverVMCController::TorquesFromJulia, this,
       ros::TransportHints().reliable().tcpNoDelay());
 
   std::string arm_id;
@@ -195,7 +195,7 @@ void ObjectHandoverVMCController::update(const ros::Time& /*time*/,
   // allocate variables
   // Eigen::VectorXd tau_task(7), tau_task_o(7), tau_nullspace(7), tau_d(7);
   // Eigen::VectorXd tau_task(7);
-
+     Eigen::VectorXd tau_d(7);
   // pseudoinverse for nullspace handling
   // kinematic pseuoinverse
   // Eigen::MatrixXd jacobian_transpose_pinv;
@@ -306,7 +306,7 @@ Eigen::Matrix<double, 7, 1> ObjectHandoverVMCController::saturateTorqueRate(
 // }
 
 void ObjectHandoverVMCController::TorquesFromJulia(
-    const std_msgs::Float64MultiArray& msg) {
+    const std_msgs::Float64MultiArrayConstPtr& msg) {
   torques_from_julia << msg->data[0], msg->data[1], msg->data[2], msg->data[3], msg->data[4], msg->data[5], msg->data[6];
 }
 

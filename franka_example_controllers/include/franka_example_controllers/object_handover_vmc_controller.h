@@ -45,13 +45,13 @@ class ObjectHandoverVMCController : public controller_interface::MultiInterfaceC
   // double filter_params_{0.005};
   // double nullspace_stiffness_{20.0};
   // double nullspace_stiffness_target_{20.0};
-  // const double delta_tau_max_{1.0};
+  const double delta_tau_max_{1.0};
   // Eigen::Matrix<double, 6, 6> cartesian_stiffness_;
   // Eigen::Matrix<double, 6, 6> cartesian_stiffness_target_;
   // Eigen::Matrix<double, 6, 6> cartesian_damping_;
   // Eigen::Matrix<double, 6, 6> cartesian_damping_target_;
   // Eigen::Matrix<double, 7, 1> q_d_nullspace_;
-  Eigen::VectorXd torques_from_julia(7);
+  Eigen::VectorXd torques_from_julia{7};
   // Eigen::Quaterniond orientation_d_;
   // std::mutex position_and_orientation_d_target_mutex_;
   // Eigen::Vector3d position_d_target_;
@@ -80,7 +80,7 @@ class ObjectHandoverVMCController : public controller_interface::MultiInterfaceC
 
   // Equilibrium pose subscriber
   ros::Subscriber joints_subscriber;
-  void TorquesFromJulia(const std_msgs::Float64MultiArray& msg);
+  void TorquesFromJulia(const std_msgs::Float64MultiArrayConstPtr& msg);
 };
 
 }  // namespace franka_example_controllers
