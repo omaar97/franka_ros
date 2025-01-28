@@ -139,6 +139,7 @@ void ObjectHandoverVMCController::starting(const ros::Time& /*time*/) {
 
   // counter = 1;
   torques_from_julia.setZero();
+  counter = 1;
 }
 
 void ObjectHandoverVMCController::update(const ros::Time& /*time*/,
@@ -243,6 +244,7 @@ void ObjectHandoverVMCController::update(const ros::Time& /*time*/,
   tau_d << torques_from_julia;
   // Saturate torque rate to avoid discontinuities
   tau_d << saturateTorqueRate(tau_d, tau_J_d);
+  // ROS_INFO_STREAM(tau_d);
   for (size_t i = 0; i < 7; ++i) {
     joint_handles_[i].setCommand(tau_d(i));
   }
@@ -308,6 +310,10 @@ Eigen::Matrix<double, 7, 1> ObjectHandoverVMCController::saturateTorqueRate(
 void ObjectHandoverVMCController::TorquesFromJulia(
     const std_msgs::Float64MultiArrayConstPtr& msg) {
   torques_from_julia << msg->data[0], msg->data[1], msg->data[2], msg->data[3], msg->data[4], msg->data[5], msg->data[6];
+  if (counter % 30 == 0) {
+  ROS_INFO_STREAM(torques_from_julia);
+  }
+  counter = counter + 1;
 }
 
 }  // namespace franka_example_controllers

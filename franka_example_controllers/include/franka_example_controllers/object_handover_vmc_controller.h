@@ -61,7 +61,7 @@ class ObjectHandoverVMCController : public controller_interface::MultiInterfaceC
 //   Eigen::Matrix<double, 6, 6> cartesian_stiffness_target_o_;
 //   Eigen::Matrix<double, 6, 6> cartesian_damping_o_;
 //   Eigen::Matrix<double, 6, 6> cartesian_damping_target_o_;
-  // int counter;
+  int counter;
   // int force;
   // float stiffness_scale;
 
